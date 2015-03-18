@@ -1,0 +1,3 @@
+-e git+https://github.com/toastdriven/django-haystack.git@e591aab7b6d6156738f84dd93eee2d0cbd582e6a#egg=django_haystack-master
+selenium==2.45.0
+wsgiref==0.1.2
