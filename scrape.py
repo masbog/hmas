@@ -1,6 +1,7 @@
 import time
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 
 browser = webdriver.PhantomJS()
@@ -26,10 +27,11 @@ while True:
         anonymity = tds[7].text
 
         print [last_update, ip, port, country, speed, connection_time, typ, anonymity]
-
-    next_button = browser.find_element_by_class_name('pagination')\
-                         .find_element_by_xpath('//a[@class="next"]')
-    if not next_button:
+    try:
+        next_button = browser.find_element_by_class_name('pagination')\
+                             .find_element_by_xpath('//a[@class="next"]')
+    except NoSuchElementException:
+        #   we've reached the last page
         break
 
     next_button.click()
