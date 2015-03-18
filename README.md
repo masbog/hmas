@@ -1,4 +1,4 @@
-Hidemyass Scraper
+HideMyAssScraper
 ==
 
 Scrapes proxies on hidemyass.com using selenium and phantomjs.
