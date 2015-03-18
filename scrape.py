@@ -1,9 +1,15 @@
 import json
 import time
+import logging
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='log.log',
+                    filemode='w')
 
 browser = webdriver.PhantomJS()
 browser.get('http://proxylist.hidemyass.com/')
@@ -12,11 +18,16 @@ def scrape():
     proxies = []
 
     while True:
+        pagination = browser.find_element_by_class_name('pagination')
+        current_page = pagination.find_element_by_xpath('//li[@class="current"]')
+        logging.info("Scraping page {}".format(current_page.text))
+
         table = browser.find_element_by_tag_name('table')
         tbody = table.find_element_by_tag_name('tbody')
         trs = tbody.find_elements_by_tag_name('tr')
 
         #   go over all rows
+        found_proxies = 0
         for tr in trs:
             tds = tr.find_elements_by_tag_name('td')
             last_update = tds[0].text
@@ -33,11 +44,14 @@ def scrape():
             anonymity = tds[7].text
 
             proxies.append([last_update, ip, port, country, speed, connection_time, typ, anonymity])
+            found_proxies += 1
+
+        logging.info("Found {} proxies on page {}".format(found_proxies, current_page.text))
+
         try:
-            next_button = browser.find_element_by_class_name('pagination')\
-                                 .find_element_by_xpath('//a[@class="next"]')
+            next_button = pagination.find_element_by_xpath('//a[@class="next"]')
         except NoSuchElementException:
-            #   we've reached the last page
+            logging.info("Reached the last page")
             break
 
         next_button.click()
