@@ -1,7 +1,5 @@
-import json
 import time
 import logging
-
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
@@ -11,10 +9,11 @@ logging.basicConfig(level=logging.INFO,
                     filename='log.log',
                     filemode='w')
 
-browser = webdriver.PhantomJS()
-browser.get('http://proxylist.hidemyass.com/')
 
 def scrape():
+    browser = webdriver.PhantomJS()
+    browser.get('http://proxylist.hidemyass.com/')
+
     proxies = []
 
     while True:
@@ -60,7 +59,3 @@ def scrape():
         time.sleep(5)
 
     return proxies
-
-if __name__ == "__main__":
-    for proxy in scrape():
-        print json.dumps(proxy)

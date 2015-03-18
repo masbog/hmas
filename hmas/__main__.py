@@ -1,3 +1,6 @@
+import json
 from hmas import scrape
 
-scrape()
+
+for proxy in scrape():
+    print json.dumps(proxy)
