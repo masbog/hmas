@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 print required
 
-setup(name='Hidemyass Scraper',
+setup(name='hmas',
       version='1.0',
       description='Scrapes proxies on hidemyass.com',
       author='Ali Bozorgkhan',
