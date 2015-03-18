@@ -1,3 +1,4 @@
+import json
 import time
 
 from selenium import webdriver
@@ -11,6 +12,8 @@ while True:
     table = browser.find_element_by_tag_name('table')
     tbody = table.find_element_by_tag_name('tbody')
     trs = tbody.find_elements_by_tag_name('tr')
+
+    #   go over all rows
     for tr in trs:
         tds = tr.find_elements_by_tag_name('td')
         last_update = tds[0].text
@@ -26,7 +29,16 @@ while True:
         typ = tds[6].text
         anonymity = tds[7].text
 
-        print [last_update, ip, port, country, speed, connection_time, typ, anonymity]
+        print json.dumps([
+            last_update,
+            ip,
+            port,
+            country,
+            speed,
+            connection_time,
+            typ,
+            anonymity
+        ])
     try:
         next_button = browser.find_element_by_class_name('pagination')\
                              .find_element_by_xpath('//a[@class="next"]')
@@ -36,4 +48,5 @@ while True:
 
     next_button.click()
 
+    #   wait 5 seconds for the ajax response
     time.sleep(5)
